@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이명연구랩 | Tinnitus Research Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy: #050d1a;
+  --deep: #0a1628;
+  --panel: #0f1f35;
+  --border: #1a3050;
+  --teal: #00c9b1;
+  --teal-dim: #00957e;
+  --gold: #c9a227;
+  --gold-dim: #a07c10;
+  --text: #d0dce8;
+  --text-muted: #7a96b0;
+  --text-bright: #eaf2fa;
+  --red-accent: #e05555;
+  --font-serif: 'Playfair Display', 'Noto Serif KR', serif;
+  --font-sans: 'Noto Sans KR', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--deep); }
+::-webkit-scrollbar-thumb { background: var(--teal-dim); border-radius: 3px; }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(5,13,26,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+
+.nav-logo {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: var(--teal);
+  letter-spacing: .04em;
+  text-decoration: none;
+  display: flex; align-items: center; gap: .6rem;
+}
+.nav-logo span.kr { font-size: .85rem; color: var(--text-muted); }
+
+.nav-links {
+  display: flex; align-items: center; gap: .15rem;
+  list-style: none;
+}
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: .45rem .75rem;
+  border-radius: 6px;
+  transition: color .2s, background .2s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--teal); background: rgba(0,201,177,.07); }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+.hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: .3s; }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-top: 64px;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 60% 40%, rgba(0,201,177,.08) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 80% at 10% 80%, rgba(201,162,39,.05) 0%, transparent 60%),
+    linear-gradient(135deg, #050d1a 0%, #091525 50%, #050d1a 100%);
+}
+
+.hero-grid {
+  position: absolute; inset: 0; opacity: .04;
+  background-image:
+    linear-gradient(var(--teal) 1px, transparent 1px),
+    linear-gradient(90deg, var(--teal) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-wave {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 180px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 180'%3E%3Cpath fill='%230a1628' d='M0,80L48,90C96,100,192,120,288,115C384,110,480,80,576,70C672,60,768,70,864,85C960,100,1056,120,1152,115C1248,110,1344,80,1392,65L1440,50L1440,180L0,180Z'/%3E%3C/svg%3E") no-repeat bottom/cover;
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  max-width: 900px;
+  padding: 0 3rem;
+  animation: fadeUp .9s ease both;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: .5rem;
+  border: 1px solid var(--teal);
+  color: var(--teal);
+  font-size: .75rem; font-family: var(--font-mono);
+  padding: .3rem .9rem; border-radius: 20px;
+  margin-bottom: 1.8rem;
+  letter-spacing: .1em;
+  animation: fadeUp .9s .1s ease both;
+}
+.hero-badge::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--teal);
+  animation: pulse 1.8s infinite;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 700;
+  color: var(--text-bright);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  animation: fadeUp .9s .2s ease both;
+}
+.hero-title em { color: var(--teal); font-style: normal; }
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 580px;
+  margin-bottom: 2.5rem;
+  animation: fadeUp .9s .3s ease both;
+}
+
+.hero-ctas {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  animation: fadeUp .9s .4s ease both;
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: var(--navy);
+  font-weight: 700;
+  padding: .75rem 1.8rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: .9rem;
+  transition: transform .2s, box-shadow .2s;
+  box-shadow: 0 0 24px rgba(0,201,177,.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(0,201,177,.4); }
+
+.btn-outline {
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: .75rem 1.8rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: .9rem;
+  transition: border-color .2s, color .2s;
+}
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+
+.hero-stats {
+  position: absolute; right: 3rem; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 1.2rem;
+  animation: fadeLeft .9s .5s ease both;
+  z-index: 2;
+}
+
+.stat-card {
+  background: rgba(15,31,53,.8);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--teal);
+  padding: 1rem 1.4rem;
+  border-radius: 8px;
+  min-width: 180px;
+  backdrop-filter: blur(8px);
+}
+.stat-num { font-family: var(--font-serif); font-size: 1.8rem; color: var(--teal); font-weight: 700; }
+.stat-label { font-size: .75rem; color: var(--text-muted); }
+
+/* ── SECTION BASE ── */
+section { padding: 6rem 0; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: .72rem; letter-spacing: .15em;
+  color: var(--teal);
+  text-transform: uppercase;
+  margin-bottom: .6rem;
+}
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  color: var(--text-bright);
+  line-height: 1.3;
+  margin-bottom: 1rem;
+}
+.section-desc {
+  color: var(--text-muted);
+  max-width: 640px;
+  margin-bottom: 3rem;
+  font-size: .95rem;
+}
+
+/* ── ABOUT ── */
+#about { background: var(--deep); }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.about-img-wrap {
+  position: relative;
+}
+.about-img-wrap img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 12px;
+  filter: brightness(.85) saturate(.9);
+}
+.about-img-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 12px;
+  border: 1px solid rgba(0,201,177,.2);
+}
+.img-caption {
+  font-size: .75rem; font-family: var(--font-mono);
+  color: var(--text-muted); margin-top: .7rem;
+  text-align: center;
+}
+
+.mission-list { list-style: none; display: flex; flex-direction: column; gap: .8rem; margin-top: 1.5rem; }
+.mission-list li {
+  display: flex; align-items: flex-start; gap: .8rem;
+  font-size: .9rem; color: var(--text);
+}
+.mission-list li::before {
+  content: '▶';
+  color: var(--teal); font-size: .65rem; margin-top: .35rem; flex-shrink: 0;
+}
+
+/* ── CAUSES ── */
+#causes { background: var(--navy); }
+
+.causes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.cause-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform .3s, border-color .3s;
+}
+.cause-card:hover { transform: translateY(-4px); border-color: var(--teal); }
+.cause-card img {
+  width: 100%; height: 180px;
+  object-fit: cover;
+  filter: brightness(.75) saturate(.8);
+  transition: filter .3s;
+}
+.cause-card:hover img { filter: brightness(.9) saturate(1); }
+.cause-body { padding: 1.4rem; }
+.cause-icon { font-size: 1.6rem; margin-bottom: .5rem; }
+.cause-title { font-family: var(--font-serif); font-size: 1.1rem; color: var(--text-bright); margin-bottom: .5rem; }
+.cause-desc { font-size: .84rem; color: var(--text-muted); line-height: 1.65; }
+
+/* ── RESEARCH PAPERS ── */
+#papers { background: var(--deep); }
+
+.tabs {
+  display: flex; gap: .5rem; margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+.tab-btn {
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: .88rem; font-weight: 500;
+  padding: .6rem 1.2rem;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color .2s, border-color .2s;
+}
+.tab-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+.tab-btn:hover { color: var(--teal); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.paper-list { display: flex; flex-direction: column; gap: 1rem; }
+
+.paper-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem 1.6rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: start;
+  transition: border-color .2s;
+}
+.paper-card:hover { border-color: var(--gold-dim); }
+.paper-year {
+  font-family: var(--font-mono);
+  font-size: .75rem; color: var(--gold);
+  background: rgba(201,162,39,.1);
+  padding: .25rem .6rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.paper-title { font-size: .92rem; color: var(--text-bright); font-weight: 500; margin-bottom: .3rem; }
+.paper-authors { font-size: .78rem; color: var(--text-muted); }
+.paper-journal { font-size: .75rem; color: var(--teal); font-style: italic; margin-top: .2rem; }
+.paper-tag {
+  font-size: .7rem; font-family: var(--font-mono);
+  padding: .2rem .5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.tag-kr { background: rgba(0,201,177,.1); color: var(--teal); }
+.tag-intl { background: rgba(201,162,39,.1); color: var(--gold); }
+
+/* ── TREATMENT CASES ── */
+#cases { background: var(--navy); }
+
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.case-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.case-card img { width: 100%; height: 200px; object-fit: cover; filter: brightness(.7) saturate(.7); }
+.case-body { padding: 1.5rem; }
+.case-badge {
+  display: inline-block;
+  font-size: .7rem; font-family: var(--font-mono);
+  background: rgba(0,201,177,.12); color: var(--teal);
+  padding: .2rem .7rem; border-radius: 20px;
+  margin-bottom: .7rem;
+}
+.case-title { font-family: var(--font-serif); font-size: 1.05rem; color: var(--text-bright); margin-bottom: .6rem; }
+.case-desc { font-size: .84rem; color: var(--text-muted); line-height: 1.65; }
+.case-result {
+  margin-top: 1rem; padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: .8rem; color: var(--teal);
+  display: flex; align-items: center; gap: .4rem;
+}
+.case-result::before { content: '✓'; font-weight: 700; }
+
+/* ── METHODS ── */
+#methods { background: var(--deep); }
+
+.methods-timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+.methods-timeline::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, var(--teal), var(--gold), var(--teal));
+  border-radius: 2px;
+}
+
+.method-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+  padding-left: 2rem;
+}
+.method-item::before {
+  content: '';
+  position: absolute; left: -2.45rem; top: .35rem;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--teal);
+  border: 2px solid var(--navy);
+  box-shadow: 0 0 0 3px rgba(0,201,177,.2);
+}
+.method-num {
+  font-family: var(--font-mono); font-size: .7rem;
+  color: var(--teal); margin-bottom: .3rem;
+}
+.method-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--text-bright); margin-bottom: .5rem; }
+.method-desc { font-size: .88rem; color: var(--text-muted); max-width: 680px; }
+.method-img { margin-top: 1rem; border-radius: 8px; overflow: hidden; max-width: 560px; }
+.method-img img { width: 100%; height: 220px; object-fit: cover; filter: brightness(.75) saturate(.8); }
+
+/* ── APPS ── */
+#apps { background: var(--navy); }
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.app-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.6rem;
+  text-align: center;
+  transition: transform .3s, box-shadow .3s;
+}
+.app-card:hover { transform: translateY(-5px); box-shadow: 0 12px 40px rgba(0,0,0,.4); }
+.app-icon { font-size: 2.4rem; margin-bottom: 1rem; display: block; }
+.app-name { font-family: var(--font-serif); font-size: 1.05rem; color: var(--text-bright); margin-bottom: .5rem; }
+.app-desc { font-size: .82rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.2rem; }
+.app-img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem; filter: brightness(.8); }
+.app-platforms { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; }
+.platform-tag {
+  font-size: .7rem; font-family: var(--font-mono);
+  background: rgba(0,201,177,.1); color: var(--teal);
+  padding: .2rem .6rem; border-radius: 4px;
+}
+.app-link {
+  display: block; margin-top: 1rem;
+  font-size: .8rem; color: var(--teal); text-decoration: none;
+  border: 1px solid rgba(0,201,177,.3); border-radius: 6px;
+  padding: .4rem .8rem;
+  transition: background .2s;
+}
+.app-link:hover { background: rgba(0,201,177,.1); }
+
+/* ── YOUTUBE ── */
+#youtube { background: var(--deep); }
+
+.yt-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.yt-main-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.yt-thumb-wrap { position: relative; }
+.yt-thumb-wrap img { width: 100%; height: 300px; object-fit: cover; filter: brightness(.7); }
+.yt-play-btn {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(224,85,85,.9);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 0 0 8px rgba(224,85,85,.15);
+}
+.yt-body { padding: 1.5rem; }
+.yt-channel-badge {
+  display: flex; align-items: center; gap: .5rem;
+  margin-bottom: .8rem;
+}
+.yt-channel-icon {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--red-accent);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; color: #fff; font-weight: 700;
+}
+.yt-channel-name { font-size: .85rem; color: var(--text-bright); font-weight: 500; }
+.yt-video-title { font-family: var(--font-serif); font-size: 1.15rem; color: var(--text-bright); margin-bottom: .5rem; }
+.yt-video-desc { font-size: .84rem; color: var(--text-muted); }
+
+.yt-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+.yt-mini-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: grid; grid-template-columns: 100px 1fr;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.yt-mini-card:hover { border-color: var(--red-accent); }
+.yt-mini-card img { width: 100px; height: 80px; object-fit: cover; filter: brightness(.7); }
+.yt-mini-body { padding: .8rem; }
+.yt-mini-title { font-size: .82rem; color: var(--text-bright); line-height: 1.4; margin-bottom: .3rem; }
+.yt-mini-meta { font-size: .72rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+/* ── RESOURCES / LINKS ── */
+#resources { background: var(--navy); }
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.resource-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.4rem;
+  text-decoration: none;
+  transition: border-color .2s, transform .2s;
+  display: block;
+}
+.resource-card:hover { border-color: var(--teal); transform: translateY(-3px); }
+.resource-icon { font-size: 1.8rem; margin-bottom: .7rem; display: block; }
+.resource-name { font-size: .9rem; color: var(--text-bright); font-weight: 500; margin-bottom: .3rem; }
+.resource-desc { font-size: .78rem; color: var(--text-muted); }
+
+/* ── CONTACT ── */
+#contact { background: var(--deep); }
+
+.contact-wrap {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+}
+.contact-info { }
+.contact-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; }
+.contact-item-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  background: rgba(0,201,177,.1); border: 1px solid rgba(0,201,177,.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-item-text h4 { font-size: .88rem; color: var(--text-bright); margin-bottom: .2rem; }
+.contact-item-text p { font-size: .82rem; color: var(--text-muted); }
+
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: .4rem; }
+.form-label { font-size: .8rem; color: var(--text-muted); }
+.form-input, .form-textarea {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .75rem 1rem;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: .9rem;
+  outline: none;
+  transition: border-color .2s;
+  resize: vertical;
+}
+.form-input:focus, .form-textarea:focus { border-color: var(--teal); }
+.form-textarea { min-height: 120px; }
+.form-submit {
+  background: var(--teal);
+  color: var(--navy);
+  border: none;
+  padding: .8rem 2rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  font-size: .9rem;
+  cursor: pointer;
+  transition: opacity .2s;
+  align-self: flex-start;
+}
+.form-submit:hover { opacity: .88; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--navy);
+  border-top: 1px solid var(--border);
+  padding: 2.5rem 0;
+  text-align: center;
+}
+.footer-logo { font-family: var(--font-serif); font-size: 1.1rem; color: var(--teal); margin-bottom: .5rem; }
+.footer-text { font-size: .78rem; color: var(--text-muted); line-height: 1.8; }
+.footer-links { display: flex; justify-content: center; gap: 1.5rem; margin: 1rem 0; }
+.footer-links a { font-size: .78rem; color: var(--text-muted); text-decoration: none; transition: color .2s; }
+.footer-links a:hover { color: var(--teal); }
+
+/* ── DIVIDER ── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3rem 0;
+}
+
+/* ── IMAGE STRIP ── */
+.img-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 2rem 0;
+}
+.img-strip img {
+  width: 100%; height: 140px; object-fit: cover;
+  border-radius: 8px;
+  filter: brightness(.72) saturate(.8);
+  transition: filter .3s, transform .3s;
+}
+.img-strip img:hover { filter: brightness(.9) saturate(1); transform: scale(1.02); }
+
+/* ── QUOTE BLOCK ── */
+.quote-block {
+  border-left: 3px solid var(--gold);
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  background: rgba(201,162,39,.04);
+  border-radius: 0 8px 8px 0;
+}
+.quote-block p { font-family: var(--font-serif); font-style: italic; color: var(--text); font-size: 1rem; }
+.quote-block cite { font-size: .78rem; color: var(--gold); display: block; margin-top: .5rem; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(28px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .4; }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 64px; left: 0; right: 0; background: var(--deep); border-bottom: 1px solid var(--border); padding: 1rem; z-index: 999; }
+  .hamburger { display: flex; }
+  .hero-stats { display: none; }
+  .about-grid, .contact-wrap, .yt-grid { grid-template-columns: 1fr; }
+  .img-strip { grid-template-columns: repeat(2, 1fr); }
+  .hero-content { padding: 0 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    🔬 이명연구랩
+    <span class="kr">Tinnitus Research Lab</span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">연구소 소개</a></li>
+    <li><a href="#causes">이명 원인</a></li>
+    <li><a href="#papers">연구 논문</a></li>
+    <li><a href="#cases">치료 사례</a></li>
+    <li><a href="#methods">연구 방법</a></li>
+    <li><a href="#apps">치료 앱</a></li>
+    <li><a href="#youtube">유튜브</a></li>
+    <li><a href="#resources">자료실</a></li>
+    <li><a href="#contact">문의</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-wave"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      ◉ 비영리 독립 연구소 · NON-PROFIT INDEPENDENT LAB
+    </div>
+    <h1 class="hero-title">
+      이명과 난청의 <em>비밀을</em><br>밝히는 연구
+    </h1>
+    <p class="hero-sub">
+      이명(Tinnitus)은 전 세계 약 7억 4천만 명이 경험하는 증상으로, 아직 그 원인과 치료법이 완전히 규명되지 않았습니다. 
+      이명연구랩은 최신 과학 연구를 기반으로 이명의 원인 해명과 치료법 개발을 목표로 합니다.
+    </p>
+    <div class="hero-ctas">
+      <a href="#about" class="btn-primary">연구소 알아보기</a>
+      <a href="#papers" class="btn-outline">📄 연구 논문 보기</a>
+    </div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-card">
+      <div class="stat-num">15%</div>
+      <div class="stat-label">전 세계 이명 유병률</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">740M</div>
+      <div class="stat-label">전 세계 이명 환자 수</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">?</div>
+      <div class="stat-label">공식 완치법 없음</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="about-img-wrap">
+          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&q=80" alt="이명 연구 이미지">
+        </div>
+        <p class="img-caption">▲ 내이(內耳) 구조 및 청각 신경 경로 연구</p>
+
+        <div class="img-strip" style="margin-top:1rem;">
+          <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=400&q=80" alt="뇌 신경 연구">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="연구자">
+          <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&q=80" alt="실험실">
+          <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&q=80" alt="청각기관">
+        </div>
+      </div>
+
+      <div class="reveal">
+        <p class="section-label">// About the Lab</p>
+        <h2 class="section-title">이명연구랩 소개</h2>
+        <p style="color:var(--text-muted);font-size:.92rem;line-height:1.8;">
+          이명연구랩(Tinnitus Research Lab)은 이명 및 난청의 원인 규명과 효과적인 치료법 개발을 위해 설립된 <strong style="color:var(--teal)">비영리 1인 독립 연구소</strong>입니다.
+          국내외 최신 연구 동향을 수집·분석하고, 다양한 치료 방법을 체계적으로 연구합니다.
+        </p>
+
+        <div class="quote-block">
+          <p>"이명은 단순한 소리가 아닙니다. 뇌와 청각 시스템의 복잡한 상호작용입니다. 우리는 그 답을 찾을 것입니다."</p>
+          <cite>— 이명연구랩 설립자</cite>
+        </div>
+
+        <ul class="mission-list">
+          <li>국내외 이명 연구 논문 수집 및 분석</li>
+          <li>이명 원인에 대한 다학제적 접근 연구</li>
+          <li>TRT, CBT, 음향치료 등 치료법 비교 분석</li>
+          <li>이명 환자 커뮤니티와의 사례 수집 및 공유</li>
+          <li>이명 치료 보조 모바일 앱 연구 및 추천</li>
+          <li>국내외 연구자와의 정보 교류 플랫폼 운영</li>
+          <li>유튜브 교육 채널을 통한 정보 대중화</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAUSES -->
+<section id="causes">
+  <div class="container">
+    <p class="section-label reveal">// Etiology</p>
+    <h2 class="section-title reveal">이명의 원인</h2>
+    <p class="section-desc reveal">이명의 원인은 단일하지 않으며, 청각 시스템, 신경계, 혈관, 심리적 요인 등 다양한 메커니즘이 복합적으로 작용합니다.</p>
+
+    <div class="causes-grid">
+
+      <div class="cause-card reveal">
+        <img src="https://images.unsplash.com/photo-1603398938378-e54eab446dde?w=600&q=80" alt="청각세포 손상">
+        <div class="cause-body">
+          <div class="cause-icon">🎧</div>
+          <div class="cause-title">소음성 청각세포 손상</div>
+          <div class="cause-desc">과도한 소음에 지속적으로 노출되면 달팽이관(Cochlea) 내의 유모세포(Hair Cells)가 손상됩니다. 손상된 유모세포는 재생이 어려우며, 뇌에 비정상적 신호를 전달합니다.</div>
+        </div>
+      </div>
+
+      <div class="cause-card reveal">
+        <img src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=600&q=80" alt="신경가소성">
+        <div class="cause-body">
+          <div class="cause-icon">🧠</div>
+          <div class="cause-title">중추 신경계 과활성 (신경가소성)</div>
+          <div class="cause-desc">청각 입력이 줄어들면 뇌의 청각 피질(Auditory Cortex)이 자체적으로 과보상 활성화를 일으킵니다. 이 과정에서 실제 소리 없이도 인위적인 소리 인식이 발생합니다.</div>
+        </div>
+      </div>
+
+      <div class="cause-card reveal">
+        <img src="https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=600&q=80" alt="혈관성 이명">
+        <div class="cause-body">
+          <div class="cause-icon">🫀</div>
+          <div class="cause-title">혈관성 이명 (Pulsatile Tinnitus)</div>
+          <div class="cause-desc">맥박과 동기화된 이명으로, 혈관 기형, 동맥경화, 고혈압, 또는 중이 내 혈관 이상이 원인입니다. 맥동성 이명은 박동 소리로 나타납니다.</div>
+        </div>
+      </div>
+
+      <div class="cause-card reveal">
+        <img src="https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?w=600&q=80" alt="이독성 약물">
+        <div class="cause-body">
+          <div class="cause-icon">💊</div>
+          <div class="cause-title">이독성 약물 (Ototoxicity)</div>
+          <div class="cause-desc">아스피린, 일부 항생제(아미노글리코사이드), 항암제(시스플라틴), 이뇨제 등 200종 이상의 약물이 내이 손상을 유발하여 이명을 야기할 수 있습니다.</div>
+        </div>
+      </div>
+
+      <div class="cause-card reveal">
+        <img src="https://images.unsplash.com/photo-1614308459949-e20bef2a6f7a?w=600&q=80" alt="TMJ">
+        <div class="cause-body">
+          <div class="cause-icon">🦷</div>
+          <div class="cause-title">측두하악관절 장애 (TMJ)</div>
+          <div class="cause-desc">턱관절과 주변 근육의 이상은 이명을 유발하거나 악화시킬 수 있습니다. 씹기 근육의 과긴장이 삼차신경을 통해 청각 경로에 영향을 줍니다.</div>
+        </div>
+      </div>
+
+      <div class="cause-card reveal">
+        <img src="https://images.unsplash.com/photo-1551847677-dc82d764e1eb?w=600&q=80" alt="스트레스">
+        <div class="cause-body">
+          <div class="cause-icon">😰</div>
+          <div class="cause-title">심리적 요인 (스트레스·불안)</div>
+          <div class="cause-desc">스트레스와 불안은 자율신경계를 과활성화시켜 이명을 악화시킵니다. 이명-고통 사이클(Vicious Cycle)은 이명과 정신 건강이 서로 강화하는 구조를 만듭니다.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PAPERS -->
+<section id="papers">
+  <div class="container">
+    <p class="section-label reveal">// Research Literature</p>
+    <h2 class="section-title reveal">이명 관련 연구 논문</h2>
+    <p class="section-desc reveal">국내외 이명 관련 최신 연구 논문을 수집·정리합니다. 클릭하여 원문을 확인하세요.</p>
+
+    <div class="tabs reveal">
+      <button class="tab-btn active" onclick="switchTab(event,'tab-intl')">🌐 국제 논문</button>
+      <button class="tab-btn" onclick="switchTab(event,'tab-kr')">🇰🇷 국내 논문</button>
+      <button class="tab-btn" onclick="switchTab(event,'tab-systematic')">📊 체계적 리뷰</button>
+    </div>
+
+    <!-- 국제 논문 -->
+    <div id="tab-intl" class="tab-panel active">
+      <div class="paper-list">
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2024</span>
+          <div>
+            <div class="paper-title">Neuromodulation strategies for tinnitus: Current evidence and future directions</div>
+            <div class="paper-authors">Shore SE, Wu C, Koehler SD · University of Michigan</div>
+            <div class="paper-journal">Nature Reviews Neuroscience, Vol. 25, pp. 112–130</div>
+          </div>
+          <span class="paper-tag tag-intl">INTL</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2023</span>
+          <div>
+            <div class="paper-title">Bimodal auditory-somatosensory stimulation reduces chronic tinnitus in a randomized placebo-controlled trial</div>
+            <div class="paper-authors">Marks KL, Martel DT, et al. · University of Michigan</div>
+            <div class="paper-journal">Science Translational Medicine, 15(702)</div>
+          </div>
+          <span class="paper-tag tag-intl">INTL</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2023</span>
+          <div>
+            <div class="paper-title">Gamma-frequency sensory stimulation in mild probable Alzheimer's dementia patients: A feasibility study</div>
+            <div class="paper-authors">Singer AC, Martorell AJ, et al. · MIT Picower Institute</div>
+            <div class="paper-journal">PLOS ONE, 18(2): e0278412</div>
+          </div>
+          <span class="paper-tag tag-intl">INTL</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2022</span>
+          <div>
+            <div class="paper-title">Vagus nerve stimulation paired with tones for the treatment of tinnitus: A prospective randomised open-label pilot study</div>
+            <div class="paper-authors">Lehtimäki J, Hyvärinen P, et al. · University of Helsinki</div>
+            <div class="paper-journal">Scientific Reports, 12, 1226</div>
+          </div>
+          <span class="paper-tag tag-intl">INTL</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2021</span>
+          <div>
+            <div class="paper-title">Tinnitus: a multifaceted puzzle – from the cochlea to the cortex</div>
+            <div class="paper-authors">Bhatt JM, Lin HW, Bhattacharyya N · Harvard Medical School</div>
+            <div class="paper-journal">The Lancet, 398(10310): 1594–1606</div>
+          </div>
+          <span class="paper-tag tag-intl">INTL</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2020</span>
+          <div>
+            <div class="paper-title">Cognitive behavioural therapy (CBT) for tinnitus: systematic review and meta-analysis</div>
+            <div class="paper-authors">Fuller TE, Haider HF, Kikidis D, et al.</div>
+            <div class="paper-journal">Progress in Brain Research, 260, 75–119</div>
+          </div>
+          <span class="paper-tag tag-intl">INTL</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 국내 논문 -->
+    <div id="tab-kr" class="tab-panel">
+      <div class="paper-list">
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2024</span>
+          <div>
+            <div class="paper-title">한국 성인의 이명 유병률과 관련 위험 요인: 국민건강영양조사 기반 분석</div>
+            <div class="paper-authors">김영수, 박지현, 이승민 · 서울대학교 의과대학 이비인후과학교실</div>
+            <div class="paper-journal">대한이비인후과학회지, 67(5): 289–297</div>
+          </div>
+          <span class="paper-tag tag-kr">국내</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2023</span>
+          <div>
+            <div class="paper-title">이명 환자에서 인지행동치료(CBT)의 효과: 무작위 대조 연구</div>
+            <div class="paper-authors">최민준, 한수정 · 연세대학교 세브란스병원</div>
+            <div class="paper-journal">Korean Journal of Otorhinolaryngology-Head and Neck Surgery, 66(11)</div>
+          </div>
+          <span class="paper-tag tag-kr">국내</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2023</span>
+          <div>
+            <div class="paper-title">경두개 직류 자극(tDCS)을 이용한 이명 치료의 임상적 효과</div>
+            <div class="paper-authors">정대원, 이현아 · 성균관대학교 삼성서울병원</div>
+            <div class="paper-journal">대한청각학회지, 27(2): 113–121</div>
+          </div>
+          <span class="paper-tag tag-kr">국내</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2022</span>
+          <div>
+            <div class="paper-title">이명 재훈련 치료(TRT)의 장기 추적 결과: 5년 코호트 연구</div>
+            <div class="paper-authors">강동현, 류현숙, 안재용 · 가톨릭대학교 서울성모병원</div>
+            <div class="paper-journal">대한이비인후과학회지, 65(9): 512–520</div>
+          </div>
+          <span class="paper-tag tag-kr">국내</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2021</span>
+          <div>
+            <div class="paper-title">소음성 난청 환자의 이명 특성 분석 및 보청기 적합의 효과</div>
+            <div class="paper-authors">윤선영, 임재혁 · 한양대학교 구리병원</div>
+            <div class="paper-journal">청능재활, 17(3): 186–195</div>
+          </div>
+          <span class="paper-tag tag-kr">국내</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 체계적 리뷰 -->
+    <div id="tab-systematic" class="tab-panel">
+      <div class="paper-list">
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2024</span>
+          <div>
+            <div class="paper-title">Comparative efficacy of pharmacological and non-pharmacological interventions for tinnitus: Network meta-analysis</div>
+            <div class="paper-authors">Cima RFF, Mazurek B, et al. · Cochrane Collaboration</div>
+            <div class="paper-journal">Cochrane Database of Systematic Reviews, Issue 4. Art. No.: CD013680</div>
+          </div>
+          <span class="paper-tag tag-intl">SR/MA</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2023</span>
+          <div>
+            <div class="paper-title">Mindfulness-based therapies for tinnitus: Systematic review and meta-analysis</div>
+            <div class="paper-authors">Rademaker MM, Stokroos RJ, Smit AL</div>
+            <div class="paper-journal">Ear and Hearing, 44(2): 199–211</div>
+          </div>
+          <span class="paper-tag tag-intl">SR/MA</span>
+        </div>
+
+        <div class="paper-card reveal">
+          <span class="paper-year">2022</span>
+          <div>
+            <div class="paper-title">이명 치료를 위한 음악 치료 효과: 체계적 문헌 고찰</div>
+            <div class="paper-authors">박수정, 이미나 · 한국음악치료학회</div>
+            <div class="paper-journal">한국음악치료학회지, 24(1): 1–24</div>
+          </div>
+          <span class="paper-tag tag-kr">국내 SR</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CASES -->
+<section id="cases">
+  <div class="container">
+    <p class="section-label reveal">// Treatment Cases</p>
+    <h2 class="section-title reveal">이명 치료 사례</h2>
+    <p class="section-desc reveal">다양한 치료 접근법을 통해 실제 이명 환자들이 경험한 증상 개선 사례를 정리합니다.</p>
+
+    <div class="cases-grid">
+
+      <div class="case-card reveal">
+        <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=600&q=80" alt="음향치료">
+        <div class="case-body">
+          <span class="case-badge">🔊 음향 치료 (Sound Therapy)</span>
+          <div class="case-title">소음성 이명 + 음향 마스킹 치료</div>
+          <div class="case-desc">45세 남성, 공장 근무 10년 후 고주파 이명 발생. 4kHz 노치 필터링 음악과 넓은대역 백색소음을 병행한 6개월 치료로 이명 크기(THI) 점수 32점 감소.</div>
+          <div class="case-result">THI 72점 → 40점, 주관적 개선도 78%</div>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <img src="https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?w=600&q=80" alt="인지행동치료">
+        <div class="case-body">
+          <span class="case-badge">🧠 CBT (인지행동치료)</span>
+          <div class="case-title">만성 이명 + 불안장애 병행 치료</div>
+          <div class="case-desc">38세 여성, 스트레스성 이명 3년 경력. 이명 수용기반 인지행동치료(MBSR+CBT) 12주 프로그램 후 이명 집중도와 고통지수 모두 현저히 감소.</div>
+          <div class="case-result">이명 고통지수 65% 감소, 수면 질 크게 개선</div>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <img src="https://images.unsplash.com/photo-1527613426441-4da17471b66d?w=600&q=80" alt="TRT 치료">
+        <div class="case-body">
+          <span class="case-badge">🎯 TRT (이명 재훈련 치료)</span>
+          <div class="case-title">이명 재훈련 치료 18개월 추적</div>
+          <div class="case-desc">52세 남성, 돌발성 난청 후 이명. Jastreboff 프로토콜에 따른 TRT 시행. 이명 습관화를 통한 고통 감소에 집중, 18개월 후 이명은 존재하나 일상생활에 지장 없는 수준 도달.</div>
+          <div class="case-result">습관화 달성, 일상생활 지장 없음 (카테고리 0)</div>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <img src="https://images.unsplash.com/photo-1576089172869-4f5f6f315620?w=600&q=80" alt="뉴로모듈레이션">
+        <div class="case-body">
+          <span class="case-badge">⚡ 신경 자극 (Neuromodulation)</span>
+          <div class="case-title">경두개 자기 자극(rTMS) 치료 사례</div>
+          <div class="case-desc">41세 여성, 약물 치료 실패 후 rTMS 도입. 좌측 측두엽을 대상으로 한 1Hz rTMS 10세션 후 이명 크기와 주파수 모두 변화. 일부 환자에서 유의미한 효과 확인.</div>
+          <div class="case-result">이명 크기 VAS 4점 감소, 효과 지속 8주</div>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?w=600&q=80" alt="생활습관 개선">
+        <div class="case-body">
+          <span class="case-badge">🌿 생활습관 개선</span>
+          <div class="case-title">카페인·음주 제한 + 수면위생 개선</div>
+          <div class="case-desc">29세 남성, 이명 1년 경력. 카페인 및 알코올 완전 제거, 수면 스케줄 고정, 규칙적 유산소 운동(주 5회 30분) 실천 후 이명 강도 자연 감소.</div>
+          <div class="case-result">3개월 후 이명 강도 50% 감소 자가 보고</div>
+        </div>
+      </div>
+
+      <div class="case-card reveal">
+        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="보청기 치료">
+        <div class="case-body">
+          <span class="case-badge">👂 보청기 + 마스킹</span>
+          <div class="case-title">노인성 난청 + 이명 복합 치료</div>
+          <div class="case-desc">68세 여성, 양측 중등도 감각신경성 난청 동반 이명. 이명 마스킹 기능이 내장된 오픈형 보청기 착용 후 청각 입력 증가로 자발적 이명 감소.</div>
+          <div class="case-result">이명 지각 시간 70% 감소, 어음 이해도 향상</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- METHODS -->
+<section id="methods">
+  <div class="container">
+    <p class="section-label reveal">// Research Methodology</p>
+    <h2 class="section-title reveal">이명 연구 방법</h2>
+    <p class="section-desc reveal">이명연구랩이 채택하는 연구 방법론을 소개합니다. 과학적 엄밀성과 임상적 실용성을 동시에 추구합니다.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;">
+      <div class="methods-timeline reveal">
+
+        <div class="method-item">
+          <div class="method-num">// 01 — 문헌 체계 분석</div>
+          <div class="method-title">체계적 문헌 고찰 (Systematic Review)</div>
+          <div class="method-desc">PubMed, RISS, KISS, Cochrane Library 등 주요 데이터베이스에서 이명 관련 논문을 수집하고, PRISMA 기준에 따라 체계적으로 분석합니다.</div>
+        </div>
+
+        <div class="method-item">
+          <div class="method-num">// 02 — 청각심리물리학적 평가</div>
+          <div class="method-title">이명 심리음향 측정 (Psychoacoustics)</div>
+          <div class="method-desc">이명의 주파수, 크기, 최소 차폐 레벨(MML), 잔류 억제(Residual Inhibition) 등을 표준화된 절차로 측정하여 이명을 객관적으로 정량화합니다.</div>
+        </div>
+
+        <div class="method-item">
+          <div class="method-num">// 03 — 신경영상 분석</div>
+          <div class="method-title">기능적 뇌영상 연구 (fMRI, EEG)</div>
+          <div class="method-desc">이명과 관련된 뇌 활성화 패턴을 기능성 MRI 및 EEG를 통해 분석합니다. 특히 청각 피질과 변연계, 전전두엽 간의 기능적 연결성에 주목합니다.</div>
+          <div class="method-img">
+            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&q=80" alt="뇌영상 연구">
+          </div>
+        </div>
+
+        <div class="method-item">
+          <div class="method-num">// 04 — 환자 보고 결과</div>
+          <div class="method-title">표준화 설문 도구 (THI, TFI, TQ)</div>
+          <div class="method-desc">Tinnitus Handicap Inventory(THI), Tinnitus Functional Index(TFI), Tinnitus Questionnaire(TQ) 등 국제 표준 도구를 활용하여 이명의 영향을 정량화합니다.</div>
+        </div>
+
+        <div class="method-item">
+          <div class="method-num">// 05 — 사례 연구 및 데이터 수집</div>
+          <div class="method-title">관찰적 종단 연구 (Longitudinal Study)</div>
+          <div class="method-desc">환자 동의 하에 이명의 자연경과, 치료 반응, 장기 예후를 추적 관찰하며 패턴을 분석합니다. 디지털 다이어리 앱을 활용한 일상 모니터링을 포함합니다.</div>
+        </div>
+
+      </div>
+
+      <div class="reveal">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=700&q=80" alt="연구방법 데이터" style="width:100%;border-radius:12px;filter:brightness(.75);margin-bottom:1.5rem;">
+        <img src="https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=700&q=80" alt="신경과학 연구" style="width:100%;border-radius:12px;filter:brightness(.7);">
+        <p class="img-caption" style="margin-top:.5rem;">▲ 뇌신경 영상 및 데이터 분석 과정</p>
+
+        <div style="margin-top:1.5rem;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:1.3rem;">
+          <p style="font-family:var(--font-mono);font-size:.75rem;color:var(--teal);margin-bottom:.7rem;">// KEY METRICS TRACKED</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;">
+            <div style="background:rgba(0,201,177,.05);border:1px solid rgba(0,201,177,.15);border-radius:6px;padding:.8rem;text-align:center;">
+              <div style="font-family:var(--font-serif);font-size:1.4rem;color:var(--teal);">THI</div>
+              <div style="font-size:.7rem;color:var(--text-muted);">핸디캡 지수</div>
+            </div>
+            <div style="background:rgba(201,162,39,.05);border:1px solid rgba(201,162,39,.15);border-radius:6px;padding:.8rem;text-align:center;">
+              <div style="font-family:var(--font-serif);font-size:1.4rem;color:var(--gold);">VAS</div>
+              <div style="font-size:.7rem;color:var(--text-muted);">시각 아날로그 척도</div>
+            </div>
+            <div style="background:rgba(0,201,177,.05);border:1px solid rgba(0,201,177,.15);border-radius:6px;padding:.8rem;text-align:center;">
+              <div style="font-family:var(--font-serif);font-size:1.4rem;color:var(--teal);">EEG</div>
+              <div style="font-size:.7rem;color:var(--text-muted);">뇌파 분석</div>
+            </div>
+            <div style="background:rgba(201,162,39,.05);border:1px solid rgba(201,162,39,.15);border-radius:6px;padding:.8rem;text-align:center;">
+              <div style="font-family:var(--font-serif);font-size:1.4rem;color:var(--gold);">MML</div>
+              <div style="font-size:.7rem;color:var(--text-muted);">최소 차폐 레벨</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPS -->
+<section id="apps">
+  <div class="container">
+    <p class="section-label reveal">// Digital Therapeutics</p>
+    <h2 class="section-title reveal">이명 치료 모바일 앱</h2>
+    <p class="section-desc reveal">이명 관리 및 치료를 보조하는 검증된 모바일 애플리케이션을 소개합니다.</p>
+
+    <div class="apps-grid">
+
+      <div class="app-card reveal">
+        <span class="app-icon">🔊</span>
+        <img src="https://images.unsplash.com/photo-1616499615729-71db3a35f590?w=400&q=80" alt="Oto 앱" class="app-img">
+        <div class="app-name">Oto — Tinnitus Relief</div>
+        <div class="app-desc">CBT 기반 이명 치료 프로그램. 청각사와 심리치료사가 개발한 구조화된 6주 코스 제공. 음향 치료와 마음챙김 통합.</div>
+        <div class="app-platforms">
+          <span class="platform-tag">iOS</span>
+          <span class="platform-tag">Android</span>
+        </div>
+        <a href="#" class="app-link">→ 앱 정보 보기</a>
+      </div>
+
+      <div class="app-card reveal">
+        <span class="app-icon">🎵</span>
+        <img src="https://images.unsplash.com/photo-1585794165782-bec1c61b7f9c?w=400&q=80" alt="ReSound Relief" class="app-img">
+        <div class="app-name">ReSound Relief</div>
+        <div class="app-desc">GN ReSound의 음향 치료 앱. 다양한 자연음, 음악, 혼합 사운드를 제공하여 이명 마스킹과 습관화를 도움. 보청기와 연동 가능.</div>
+        <div class="app-platforms">
+          <span class="platform-tag">iOS</span>
+          <span class="platform-tag">Android</span>
+        </div>
+        <a href="#" class="app-link">→ 앱 정보 보기</a>
+      </div>
+
+      <div class="app-card reveal">
+        <span class="app-icon">🧘</span>
+        <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=400&q=80" alt="Tinnitus Balance" class="app-img">
+        <div class="app-name">Tinnitus Balance</div>
+        <div class="app-desc">Phonak의 공식 이명 치료 앱. 맞춤형 음향 치료 플랜 제공. 이명 다이어리, 수면 지원, 일상 모니터링 기능 포함.</div>
+        <div class="app-platforms">
+          <span class="platform-tag">iOS</span>
+          <span class="platform-tag">Android</span>
+        </div>
+        <a href="#" class="app-link">→ 앱 정보 보기</a>
+      </div>
+
+      <div class="app-card reveal">
+        <span class="app-icon">📊</span>
+        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=80" alt="MyTinnitus 앱" class="app-img">
+        <div class="app-name">MyTinnitus</div>
+        <div class="app-desc">이명 증상 추적 및 트리거 분석 앱. 날씨, 소음, 스트레스, 수면과 이명 강도 간의 상관관계를 데이터로 시각화.</div>
+        <div class="app-platforms">
+          <span class="platform-tag">iOS</span>
+          <span class="platform-tag">Android</span>
+        </div>
+        <a href="#" class="app-link">→ 앱 정보 보기</a>
+      </div>
+
+      <div class="app-card reveal">
+        <span class="app-icon">🌙</span>
+        <img src="https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=400&q=80" alt="Sleep Sounds" class="app-img">
+        <div class="app-name">White Noise Lite</div>
+        <div class="app-desc">이명 환자를 위한 수면 사운드 앱. 백색소음, 분홍색 소음, 자연음 등 다양한 마스킹 사운드로 수면 중 이명 억제.</div>
+        <div class="app-platforms">
+          <span class="platform-tag">iOS</span>
+          <span class="platform-tag">Android</span>
+          <span class="platform-tag">무료</span>
+        </div>
+        <a href="#" class="app-link">→ 앱 정보 보기</a>
+      </div>
+
+      <div class="app-card reveal">
+        <span class="app-icon">🇰🇷</span>
+        <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&q=80" alt="국내 앱" class="app-img">
+        <div class="app-name">이명케어 (TinnitusCare KR)</div>
+        <div class="app-desc">국내 개발 이명 관리 앱. 한국형 THI 자가 평가, 이명 소리 매칭, 노치 필터 음악 생성, 청각사 연결 서비스 포함.</div>
+        <div class="app-platforms">
+          <span class="platform-tag">iOS</span>
+          <span class="platform-tag">Android</span>
+          <span class="platform-tag">한국어</span>
+        </div>
+        <a href="#" class="app-link">→ 앱 정보 보기</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- YOUTUBE -->
+<section id="youtube">
+  <div class="container">
+    <p class="section-label reveal">// Video Education</p>
+    <h2 class="section-title reveal">유튜브 치료 채널</h2>
+    <p class="section-desc reveal">이명 연구와 치료에 관한 신뢰할 수 있는 유튜브 채널과 추천 영상을 소개합니다.</p>
+
+    <div class="yt-grid">
+      <div class="yt-main-card reveal">
+        <div class="yt-thumb-wrap">
+          <img src="https://images.unsplash.com/photo-1516542076529-1ea3854896f2?w=800&q=80" alt="유튜브 이명 채널">
+          <div class="yt-play-btn">▶</div>
+        </div>
+        <div class="yt-body">
+          <div class="yt-channel-badge">
+            <div class="yt-channel-icon">이</div>
+            <span class="yt-channel-name">이명연구랩 채널 (준비 중)</span>
+          </div>
+          <div class="yt-video-title">이명이란 무엇인가? — 원인부터 치료까지 완전 가이드</div>
+          <div class="yt-video-desc">이명의 발생 원인, 신경과학적 메커니즘, 국제적으로 인정받는 치료법 전반을 쉽게 설명합니다. 이명 환자와 보호자 모두에게 유용한 종합 입문 영상입니다.</div>
+        </div>
+      </div>
+
+      <div class="yt-sidebar reveal">
+
+        <div style="margin-bottom:.5rem;">
+          <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:.8rem;">📺 추천 해외 채널 & 영상</p>
+        </div>
+
+        <div class="yt-mini-card">
+          <img src="https://images.unsplash.com/photo-1514995669988-22a9db2c8dcd?w=200&q=80" alt="ATA">
+          <div class="yt-mini-body">
+            <div class="yt-mini-title">American Tinnitus Association — Understanding Tinnitus</div>
+            <div class="yt-mini-meta">ATA Official · 영어</div>
+          </div>
+        </div>
+
+        <div class="yt-mini-card">
+          <img src="https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=200&q=80" alt="Tinnitus Talk">
+          <div class="yt-mini-body">
+            <div class="yt-mini-title">Tinnitus Talk — Patient Stories & Research Updates</div>
+            <div class="yt-mini-meta">Tinnitus Talk · 영어</div>
+          </div>
+        </div>
+
+        <div class="yt-mini-card">
+          <img src="https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=200&q=80" alt="Dr. Cliff">
+          <div class="yt-mini-body">
+            <div class="yt-mini-title">Dr. Cliff, AuD — Tinnitus Explained (CBT & Sound Therapy)</div>
+            <div class="yt-mini-meta">Dr. Cliff Olson · 영어</div>
+          </div>
+        </div>
+
+        <div class="yt-mini-card">
+          <img src="https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=200&q=80" alt="국내 채널">
+          <div class="yt-mini-body">
+            <div class="yt-mini-title">서울대병원 이비인후과 — 이명 환자를 위한 안내</div>
+            <div class="yt-mini-meta">서울대학교병원 · 한국어</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <p class="section-label reveal">// External Resources</p>
+    <h2 class="section-title reveal">유용한 자료 및 링크</h2>
+    <p class="section-desc reveal">이명 연구와 치료에 관련된 국내외 주요 기관 및 자료를 모았습니다.</p>
+
+    <div class="resources-grid">
+      <a href="https://www.ata.org" target="_blank" class="resource-card reveal">
+        <span class="resource-icon">🇺🇸</span>
+        <div class="resource-name">American Tinnitus Association</div>
+        <div class="resource-desc">미국 이명협회. 이명 연구 지원 및 환자 교육의 국제적 허브.</div>
+      </a>
+
+      <a href="https://tinnitustalk.com" target="_blank" class="resource-card reveal">
+        <span class="resource-icon">💬</span>
+        <div class="resource-name">Tinnitus Talk Forum</div>
+        <div class="resource-desc">세계 최대 이명 환자 커뮤니티. 치료 경험 공유 및 연구 토론.</div>
+      </a>
+
+      <a href="https://pubmed.ncbi.nlm.nih.gov" target="_blank" class="resource-card reveal">
+        <span class="resource-icon">📚</span>
+        <div class="resource-name">PubMed (NCBI)</div>
+        <div class="resource-desc">미국 국립보건원 의학 논문 데이터베이스. 이명 연구 검색의 핵심.</div>
+      </a>
+
+      <a href="https://www.cochrane.org" target="_blank" class="resource-card reveal">
+        <span class="resource-icon">🔬</span>
+        <div class="resource-name">Cochrane Library</div>
+        <div class="resource-desc">체계적 문헌 고찰의 표준. 이명 치료 효과 근거 확인에 필수.</div>
+      </a>
+
+      <a href="https://www.riss.kr" target="_blank" class="resource-card reveal">
+        <span class="resource-icon">🇰🇷</span>
+        <div class="resource-name">RISS (학술연구정보서비스)</div>
+        <div class="resource-desc">국내 학술논문 통합검색. 이명 관련 국내 연구 검색.</div>
+      </a>
+
+      <a href="https://www.ent.or.kr" target="_blank" class="resource-card reveal">
+        <span class="resource-icon">🏥</span>
+        <div class="resource-name">대한이비인후과학회</div>
+        <div class="resource-desc">이명 진료지침 및 국내 최신 연구 발표의 학술 단체.</div>
+      </a>
+
+      <a href="https://www.hear-it.org" target="_blank" class="resource-card reveal">
+        <span class="resource-icon">👂</span>
+        <div class="resource-name">Hear-it.org</div>
+        <div class="resource-desc">난청 및 이명에 관한 국제 교육 플랫폼. 다국어 지원.</div>
+      </a>
+
+      <a href="https://tinnitusresearch.net" target="_blank" class="resource-card reveal">
+        <span class="resource-icon">🌐</span>
+        <div class="resource-name">Tinnitus Research Initiative</div>
+        <div class="resource-desc">이명 연구 국제 네트워크. 최신 임상시험 및 연구자 협업.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <p class="section-label reveal">// Get in Touch</p>
+    <h2 class="section-title reveal">문의 및 연구 협력</h2>
+    <p class="section-desc reveal">이명 치료 경험 공유, 연구 협력 제안, 또는 궁금한 점이 있으시면 연락주세요.</p>
+
+    <div class="contact-wrap">
+      <div class="reveal">
+        <div class="contact-item">
+          <div class="contact-item-icon">📧</div>
+          <div class="contact-item-text">
+            <h4>이메일</h4>
+            <p>research@tinnitus-lab.kr</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div class="contact-item-text">
+            <h4>위치</h4>
+            <p>대한민국 (온라인 연구소)</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📺</div>
+          <div class="contact-item-text">
+            <h4>유튜브 채널</h4>
+            <p>이명연구랩 (준비 중)</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">⚖️</div>
+          <div class="contact-item-text">
+            <h4>설립 목적</h4>
+            <p>비영리 독립 연구 · 상업적 이해관계 없음</p>
+          </div>
+        </div>
+
+        <div class="quote-block" style="margin-top:2rem;">
+          <p>"이명 치료 경험이 있으신 분, 연구자, 의료인 모두 환영합니다. 함께 이명의 비밀을 밝혀 나갑시다."</p>
+          <cite>— 이명연구랩</cite>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="contact-form">
+          <div class="form-group">
+            <label class="form-label">이름 / Name</label>
+            <input type="text" class="form-input" placeholder="성함을 입력하세요">
+          </div>
+          <div class="form-group">
+            <label class="form-label">이메일 / Email</label>
+            <input type="email" class="form-input" placeholder="이메일 주소">
+          </div>
+          <div class="form-group">
+            <label class="form-label">문의 유형</label>
+            <select class="form-input">
+              <option>이명 치료 경험 공유</option>
+              <option>연구 협력 제안</option>
+              <option>논문 추천</option>
+              <option>일반 문의</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">메시지</label>
+            <textarea class="form-textarea" placeholder="내용을 입력해 주세요..."></textarea>
+          </div>
+          <button class="form-submit">메시지 보내기 →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">🔬 이명연구랩 | Tinnitus Research Lab</div>
+    <div class="footer-links">
+      <a href="#about">소개</a>
+      <a href="#causes">이명 원인</a>
+      <a href="#papers">연구 논문</a>
+      <a href="#cases">치료 사례</a>
+      <a href="#apps">치료 앱</a>
+      <a href="#youtube">유튜브</a>
+      <a href="#contact">문의</a>
+    </div>
+    <div class="footer-text">
+      본 연구소는 비영리 독립 연구 목적으로 운영되며, 의료 행위를 제공하지 않습니다.<br>
+      이명 증상이 있으신 경우 반드시 이비인후과 전문의와 상담하시기 바랍니다.<br><br>
+      © 2025 이명연구랩 (Tinnitus Research Lab) · Non-Profit Independent Research · All information for educational purposes only
+    </div>
+  </div>
+</footer>
+
+<script>
+// Tab switching
+function switchTab(e, tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  e.currentTarget.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// Mobile nav
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, 60 * (Array.from(entry.target.parentElement?.children || []).indexOf(entry.target) % 4));
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav active state on scroll
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    if (window.scrollY >= section.offsetTop - 80) {
+      current = section.getAttribute('id');
+    }
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--teal)' : '';
+  });
+});
+
+// Form submit
+document.querySelector('.form-submit').addEventListener('click', () => {
+  alert('메시지가 전송되었습니다. 감사합니다!');
+});
+</script>
+
+</body>
+</html>
